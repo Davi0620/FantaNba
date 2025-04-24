@@ -2,13 +2,14 @@
     include "db.php";
     header("Content-Type: application/json");
     $method = $_SERVER['REQUEST_METHOD'];
+    $parametri = json_decode(file_get_contents('php://input'), true);
     if ($method=="POST")
     {
-        $apiKey =$_POST["apiKey"];
-        $logo=$_POST["logo"];
-        $nome=$_POST["nome"];
+        $apiKey =$parametri["apiKey"];
+        $logo=$parametri["logo"];
+        $nome=$parametri["nome"];
         if($conn->query(
-                        "UPDATE `utente` SET `nomeSquadra` = '$nome', `logoSquadra` = '$logo' WHERE `api-key` = '$apiKey'"))
+                        "UPDATE `utente` SET `nomeSquadra` = '$nome', `logoSquadra` = '$logo' WHERE `apiKey` = '$apiKey'"))
                         
             echo json_encode(["stato"=>true,"messaggio"=>"squadra creata"]);
         else

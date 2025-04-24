@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Apr 17, 2025 alle 18:58
+-- Creato il: Apr 24, 2025 alle 17:50
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -42,14 +42,14 @@ CREATE TABLE `giocatore` (
 --
 
 INSERT INTO `giocatore` (`id`, `Nome`, `Cognome`, `Posizione`, `idSquadra`, `idApi`, `Valutazione`) VALUES
-(1, 'Alperen', 'Sengun', 'C', 1, 1133822, 7.5),
-(2, 'Fred', 'VanVleet', 'G', 1, 846972, 7.4),
-(3, 'Jabari', 'Smith', 'F', 1, 1178599, 7),
-(4, 'Dillon', 'Brooks', 'GF', 1, 885254, 7.1),
-(5, 'Jalen', 'Green', 'G', 1, 1133838, 6),
-(6, 'Tari', 'Eason', 'F', 1, 1178696, 6.5),
-(7, 'Reed', 'Sheppard', 'G', 1, 1599611, 6.8),
-(8, 'Jeff', 'Green', 'F', 1, 817126, 6.2),
+(1, 'Alperen', 'Sengun', 'C', 1, 1133822, 75),
+(2, 'Fred', 'VanVleet', 'G', 1, 846972, 74),
+(3, 'Jabari', 'Smith', 'F', 1, 1178599, 70),
+(4, 'Dillon', 'Brooks', 'GF', 1, 885254, 71),
+(5, 'Jalen', 'Green', 'G', 1, 1133838, 60),
+(6, 'Tari', 'Eason', 'F', 1, 1178696, 65),
+(7, 'Reed', 'Sheppard', 'G', 1, 1599611, 68),
+(8, 'Jeff', 'Green', 'F', 1, 817126, 62),
 (9, 'Steven', 'Adams', 'C', 1, 816938, 0),
 (10, 'Aaron\r\n', 'Holiday', 'G', 1, 940789, 0),
 (11, 'Jock', 'Landale', 'C', 1, 954950, 0),
@@ -101,7 +101,6 @@ INSERT INTO `squadra` (`id`, `Nome`, `idAPI`) VALUES
 --
 
 CREATE TABLE `squadrautente` (
-  `id` int(11) NOT NULL,
   `idUtente` int(11) NOT NULL,
   `idGiocatore` int(11) NOT NULL,
   `prezzo` float NOT NULL,
@@ -112,8 +111,8 @@ CREATE TABLE `squadrautente` (
 -- Dump dei dati per la tabella `squadrautente`
 --
 
-INSERT INTO `squadrautente` (`id`, `idUtente`, `idGiocatore`, `prezzo`, `data`) VALUES
-(1, 1, 1, 7.5, '2025-04-17 18:39:51');
+INSERT INTO `squadrautente` (`idUtente`, `idGiocatore`, `prezzo`, `data`) VALUES
+(1, 1, 75, '2025-04-24 17:10:11');
 
 -- --------------------------------------------------------
 
@@ -127,8 +126,8 @@ CREATE TABLE `utente` (
   `password` text NOT NULL,
   `email` varchar(255) NOT NULL,
   `apiKey` char(34) NOT NULL,
-  `nomeSquadra` varchar(255) NOT NULL,
-  `logoSquadra` varchar(255) NOT NULL,
+  `nomeSquadra` varchar(255) DEFAULT NULL,
+  `logoSquadra` varchar(255) DEFAULT NULL,
   `crediti` int(11) NOT NULL DEFAULT 800
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -137,7 +136,8 @@ CREATE TABLE `utente` (
 --
 
 INSERT INTO `utente` (`id`, `username`, `password`, `email`, `apiKey`, `nomeSquadra`, `logoSquadra`, `crediti`) VALUES
-(1, 'pippo', 'avsd', 'vads', '809720-0bf3f4-516349-fc0074-b5e278', 'pippo', 'pippo.jpg', 720);
+(1, 'pippo', 'avsd', 'vads', '809720-0bf3f4-516349-fc0074-b5e278', 'test', 'test.jpg', 1167),
+(2, 'pippoTest', '202cb962ac59075b964b07152d234b70', 'test@test.it', '044e5d-324071-e12ab0-40050c-93c4e5', NULL, NULL, 800);
 
 --
 -- Indici per le tabelle scaricate
@@ -160,7 +160,7 @@ ALTER TABLE `squadra`
 -- Indici per le tabelle `squadrautente`
 --
 ALTER TABLE `squadrautente`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`idUtente`,`idGiocatore`),
   ADD KEY `fk2` (`idGiocatore`),
   ADD KEY `fk3` (`idUtente`);
 
@@ -169,7 +169,9 @@ ALTER TABLE `squadrautente`
 --
 ALTER TABLE `utente`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `api-key` (`apiKey`);
+  ADD UNIQUE KEY `api-key` (`apiKey`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
@@ -188,16 +190,10 @@ ALTER TABLE `squadra`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT per la tabella `squadrautente`
---
-ALTER TABLE `squadrautente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Limiti per le tabelle scaricate

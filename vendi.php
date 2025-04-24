@@ -8,14 +8,15 @@
         $giocatori=[];
         $apiKey =$parametri["apiKey"];
         $idGiocatore=$parametri["idGiocatore"];
-        if($conn->query("DELETE FROM squadrautente WHERE idGiocatore=$idGiocatore and idUtente=(select id from utente where apiKey='$apiKey')"))
-            
+
+        $conn->query("DELETE FROM squadrautente WHERE idGiocatore=$idGiocatore and idUtente=(select id from utente where apiKey='$apiKey')");
+        if($conn->affected_rows>0)
             if($conn->query("UPDATE utente SET crediti = crediti+(SELECT Valutazione from giocatore WHERE id=$idGiocatore) WHERE apiKey = '$apiKey'"))
                 echo json_encode(["stato"=>true,"messaggio"=>"squadra creata"]);
             else
                 echo json_encode(["stato"=>false,"messaggio"=>"errore nella creazione"]);
         else
-            echo json_encode(["stato"=>false,"messaggio"=>"errore nella creazione"]);
+            echo json_encode(["stato"=>false,"messaggio"=>"giocatore non acquistato"]);
     }
     else
         echo json_encode(["stato"=>false,"messaggio"=>"solo in post"]);
