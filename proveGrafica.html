@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FANTANBA - Fantasy NBA</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom right, #ffffff, #e6e6e6);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1D428A;
+      color: white;
+      padding: 20px;
+    }
+    .navbar h1 {
+      font-size: 26px;
+      letter-spacing: 1px;
+    }
+    .login-info a, .login-info img {
+      font-size: 18px;
+      text-decoration: none;
+      color: white;
+    }
+    .login-info img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+
+    /* Main Layout */
+    .main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 2fr 3fr; /* Partite 40%, Funzionalità 60% */
+      gap: 30px;
+      padding: 20px;
+    }
+
+    /* Risultati */
+    .results {
+      background-color: white;
+      border: 3px solid #D50032;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      height: fit-content;
+    }
+    .results h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #1D428A;
+      text-align: center;
+    }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 17px;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    .result-item:last-child {
+      border-bottom: none;
+    }
+    .score {
+      font-weight: bold;
+      color: #D50032;
+      font-size: 19px;
+    }
+
+    /* Funzionalità */
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .feature-card {
+      background: white;
+      border: 2px solid #1D428A;
+      border-radius: 12px;
+      width: 100%;
+      height: 180px;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+    .feature-card:hover {
+      background-color: #D50032;
+      color: white;
+      transform: scale(1.05);
+      border-color: #D50032;
+    }
+    .feature-card h3 {
+      margin-bottom: 10px;
+      font-size: 19px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: #555;
+    }
+    .feature-card:hover p {
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+  <h1>FantaNba</h1>
+  <div class="login-info">
+    <script>
+      var isLoggedIn = false; // cambia a true per simulare utente loggato
+      var userProfileImage = "https://via.placeholder.com/45";
+
+      if (isLoggedIn) {
+        document.write('<img src="' + userProfileImage + '" alt="User Image">');
+      } else {
+        document.write('<a href="#">LOGIN</a>');
+      }
+    </script>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  
+  <!-- Risultati -->
+  <div class="results">
+    <h2>Ultime Partite</h2>
+    <div class="result-item">
+      <span>Heat</span>
+      <span class="score">102 - 98</span>
+      <span>Celtics</span>
+    </div>
+    <div class="result-item">
+      <span>Lakers</span>
+      <span class="score">110 - 107</span>
+      <span>Warriors</span>
+    </div>
+    <div class="result-item">
+      <span>Bucks</span>
+      <span class="score">99 - 105</span>
+      <span>Sixers</span>
+    </div>
+    <div class="result-item">
+      <span>Knicks</span>
+      <span class="score">115 - 120</span>
+      <span>Nets</span>
+    </div>
+  </div>
+
+  <!-- Funzionalità -->
+  <div class="features">
+    <div class="feature-card" onclick="location.href='#'">
+      <h3>Crea Squadra</h3>
+      <p>Costruisci il tuo dream team NBA!</p>
+    </div>
+    <div class="feature-card" onclick="location.href='#'">
+      <h3>Visualizza Giocatori</h3>
+      <p>Scopri i migliori talenti disponibili.</p>
+    </div>
+    <div class="feature-card" onclick="location.href='#'">
+      <h3>Statistiche LIVE</h3>
+      <p>Aggiornamenti in tempo reale sui tuoi campioni!</p>
+    </div>
+    <div class="feature-card" onclick="location.href='#'">
+      <h3>Leghe Private</h3>
+      <p>Crea campionati personalizzati.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Logo NBA -->
+<div class="nba-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/en/0/03/NBA_logo.svg" alt="NBA Logo">
+  </div>
+  
+</body>
+</html>
