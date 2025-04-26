@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Street Basket - Acquista Giocatori</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  STREET BASKET - Acquista Giocatori
+</header>
+
+<div class="container" id="giocatori-container">
+  <!-- Qui si caricheranno i giocatori dal database -->
+</div>
+
+<!-- Messaggio di risposta -->
+<div id="messaggio" style="text-align: center; margin-top: 20px; font-size: 1.5rem;"></div>
+
+<script>
+  const apiKey = "809720-0bf3f4-516349-fc0074-b5e278"; // <-- Qui l'utente deve mettere la sua apiKey
+
+  // Funzione per caricare i giocatori dal server
+  function caricaGiocatori() {
+    fetch('getGiocatori.php')
+      .then(response => response.json())
+      .then(giocatori => {
+        const container = document.getElementById('giocatori-container');
+        container.innerHTML = ''; // Pulisci il container
+
+        giocatori.forEach(giocatore => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <h2>${giocatore.nome}</h2>
+            <p>Ruolo: ${giocatore.ruolo}</p>
+            <p>Valutazione: ${giocatore.valutazione}</p>
+            <a href="#" class="button" onclick="acquistaGiocatore(${giocatore.id})">Acquista</a>
+          `;
+          container.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Errore caricando i giocatori:', error);
+        document.getElementById('messaggio').innerText = '❌ Errore nel caricamento giocatori.';
+      });
+  }
+
+  // Funzione per acquistare un giocatore
+  function acquistaGiocatore(idGiocatore) {
+    fetch('7fed6a62-5884-49a7-ba52-6d4b75ce7b70.php', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        apiKey: apiKey,
+        idGiocatore: idGiocatore
+      }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      const msgDiv = document.getElementById('messaggio');
+      if (data.stato) {
+        msgDiv.style.color = 'limegreen';
+        msgDiv.innerText = '✅ ' + data.messaggio;
+      } else {
+        msgDiv.style.color = 'red';
+        msgDiv.innerText = '❌ ' + data.messaggio;
+      }
+    })
+    .catch((error) => {
+      console.error('Errore:', error);
+      const msgDiv = document.getElementById('messaggio');
+      msgDiv.style.color = 'red';
+      msgDiv.innerText = '❌ Errore nella richiesta.';
+    });
+  }
+
+  // Chiamata iniziale per caricare i giocatori
+  caricaGiocatori();
+</script>
+
+</body>
+</html>

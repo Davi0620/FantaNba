@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Street Basket - Profilo Utente</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="street-style.css">
+</head>
+<body>
+
+<header>
+  STREET BASKET - Profilo Utente
+</header>
+
+<div class="container">
+  
+  <div id="crediti" style="text-align: center; font-size: 1.8rem; margin-bottom: 30px;">
+    <!-- Qui mostreremo i crediti -->
+  </div>
+
+  <div id="squadra-container">
+    <!-- Qui si caricheranno i giocatori della squadra -->
+  </div>
+
+</div>
+
+<script>
+  const apiKey = "809720-0bf3f4-516349-fc0074-b5e278"; // <-- Qui metti l'apiKey dell'utente
+
+  function caricaCrediti() {
+    fetch('getCreditiUtente.php?apiKey=' + apiKey)
+      .then(response => response.json())
+      .then(data => {
+        if (data.stato) {
+          document.getElementById('crediti').innerText = `💰 Crediti disponibili: ${data.crediti}`;
+        } else {
+          document.getElementById('crediti').innerText = '❌ Errore caricando crediti.';
+        }
+      })
+      .catch(error => {
+        console.error('Errore caricando crediti:', error);
+        document.getElementById('crediti').innerText = '❌ Errore caricando crediti.';
+      });
+  }
+
+  function caricaSquadra() {
+    fetch('getSquadraUtente.php?apiKey=' + apiKey)
+      .then(response => response.json())
+      .then(giocatori => {
+        const container = document.getElementById('squadra-container');
+        container.innerHTML = '';
+
+        if (giocatori.length === 0) {
+          container.innerHTML = '<p style=\"text-align:center; font-size:1.5rem;\">Non hai ancora acquistato giocatori! 🏀</p>';
+          return;
+        }
+
+        giocatori.forEach(giocatore => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <h2>${giocatore.nome}</h2>
+            <p>Ruolo: ${giocatore.ruolo}</p>
+            <p>Valutazione: ${giocatore.valutazione}</p>
+          `;
+          container.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Errore caricando squadra:', error);
+        document.getElementById('squadra-container').innerText = '❌ Errore caricando squadra.';
+      });
+  }
+
+  // Caricamento iniziale
+  caricaCrediti();
+  caricaSquadra();
+</script>
+
+</body>
+</html>
