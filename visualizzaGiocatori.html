@@ -96,7 +96,7 @@
   <script>
 
     function caricaGiocatori(){
-        fetch('giocatori.php', {
+        fetch('backEnd/giocatori.php', {
             method: 'GET',
             headers:{"Content-Type":"application/json"}
         }).then(response => response.json()).then((json) => {

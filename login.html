@@ -148,7 +148,7 @@
   </div>
 
   <script>
-    var nextPage="proveGrafica.html"
+    var nextPage="index.html"
     if(sessionStorage.getItem("apikey"))
       window.location.href=nextPage;
 
@@ -169,7 +169,7 @@
     function accedi() {
         var username=document.getElementById("username").value;
         var password=document.getElementById("password").value;
-        fetch(`login.php?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+        fetch(`backEnd/login.php?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
             method: 'GET',
             headers:{"Content-Type":"application/json"}
         }).then(response => response.json()) .then((json) => {
@@ -189,7 +189,7 @@
         const dati={'username': username,
                         'password': password,
                         'mail': mail}
-        return fetch('registra.php', {
+        return fetch('backEnd/registra.php', {
             method: 'POST',
             headers:{"Content-Type":"application/json"},
             body: JSON.stringify(dati)

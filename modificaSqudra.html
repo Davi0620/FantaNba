@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fanta Basket Squad</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .court {
+      background: linear-gradient(#cba, #865);
+    }
+    .player-card {
+      justify-items: center;
+      align-content: center;
+      width: 130px;
+      height: 150px;
+      text-align: center;
+      background-color: #000;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 0.5rem;
+    }
+    .add-btn {
+      background-color: #4f46e5;
+      color: white;
+      border-radius: 9999px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-purple-700 text-white min-h-screen p-4">
+  <div class="text-center text-2xl font-bold mb-4">SQUADRA</div>
+  <div class="text-center text-lg font-semibold mb-6" id="nomeSquadra"></div>
+
+  <div class="court mx-auto w-full max-w-3xl p-6 rounded-xl">
+    <div class="grid grid-cols-5 gap-4 mb-6 justify-items-center">
+      <div class="player-card col-start-1">
+        <div class="font-bold" id="pos-1-nome">A. JOHNSON</div>
+        <div class="text-sm" id="pos-1-stat">ATL | 12.0 CR</div>
+        <button class="add-btn" id="pos-1-btn" onclick="compra(1)">+</button>
+      </div>
+      <div class="player-card col-start-3">
+        <div class="font-bold" id="pos-2-nome">C. JOKIC</div>
+        <div class="text-sm" id="pos-2-stat">DEN | 251.0 CR</div>
+        <button class="add-btn" id="pos-2-btn" onclick="compra(2)">+</button>
+      </div>
+      <div class="player-card col-start-5">
+        <div class="font-bold" id="pos-3-nome">A. KUMINGA</div>
+        <div class="text-sm" id="pos-3-stat">GSW | 9.5 CR</div>
+        <button class="add-btn" id="pos-3-btn" onclick="compra(3)">+</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-5 gap-4 mb-6 justify-items-center">
+      <div class="player-card col-start-2">
+        <div class="font-bold" id="pos-4-nome">G. SMART</div>
+        <div class="text-sm" id="pos-4-stat">MEM | 8.0 CR</div>
+        <button class="add-btn" id="pos-4-btn" onclick="compra(4)">+</button>
+      </div>
+      <div class="player-card col-start-4">
+        <div class="font-bold" id="pos-5-nome">G. GIDDEY</div>
+        <div class="text-sm" id="pos-5-stat">OKC | 11.0 CR</div>
+        <button class="add-btn" id="pos-5-btn" onclick="compra(5)">+</button>
+      </div>
+    </div>
+
+    <div class="text-center text-lg font-semibold mt-6 mb-2">Panchina</div>
+    <div class="grid grid-cols-5 gap-2 mb-4 justify-items-center">
+      <div class="player-card">
+        <div class="font-bold" id="pos-6-nome">A. MOGBO</div>
+        <div class="text-sm" id="pos-6-stat">4.0 CR</div>
+        <button class="add-btn" id="pos-6-btn" onclick="compra(6)">+</button>
+      </div>
+      <div class="player-card">
+        <div class="font-bold" id="pos-7-nome">B. SIMMONS</div>
+        <div class="text-sm" id="pos-7-stat">6.0 CR</div>
+        <button class="add-btn" id="pos-7-btn" onclick="compra(7)">+</button>
+      </div>
+      <div class="player-card">
+        <div class="font-bold" id="pos-8-nome">A. REED</div>
+        <div class="text-sm" id="pos-8-stat">6.5 CR</div>
+        <button class="add-btn" id="pos-8-btn" onclick="compra(8)">+</button>
+      </div>
+      <div class="player-card">
+        <div class="font-bold" id="pos-9-nome">G. WHITE</div>
+        <div class="text-sm" id="pos-9-stat">9.5 CR</div>
+        <button class="add-btn" id="pos-9-btn" onclick="compra(9)">+</button>
+      </div>
+      <div class="player-card">
+        <div class="font-bold" id="pos-10-nome">C. MISSI</div>
+        <div class="text-sm" id="pos-10-stat">6.0 CR</div>
+        <button class="add-btn" id="pos-10-btn" onclick="compra(10)">+</button>
+      </div>
+    </div>
+
+    <div class="text-center text-lg font-semibold mt-6 mb-2">Allenatore</div>
+    <div class="player-card mx-auto">
+      <div class="font-bold" id="pos-11-nome">HC. UDOKA</div>
+      <div class="text-sm" id="pos-11-stat">HOU | 7.5 CR</div>
+      <button class="add-btn" id="pos-11-btn" onclick="compra(11)">+</button>
+    </div>
+  </div>
+
+  <script>
+    const apiKey = sessionStorage.getItem("apikey"); // <-- Qui metti l'apiKey dell'utente
+  
+    if(!apiKey)
+        window.location.href="login.html";
+    document.addEventListener("DOMContentLoaded",()=>{
+      ripulisci();
+        fetch(`backEnd/getSquadra.php?apikey=${encodeURIComponent(apiKey)}`, {
+            method: 'GET',
+            headers:{"Content-Type":"application/json"}
+        }).then(response => response.json()).then(json=>{
+            if(!json.stato)
+            {
+              document.getElementById("nomeSquadra").innerHTML="non ci sono giocatori";
+              return;
+            }
+            document.getElementById("nomeSquadra").innerHTML=json.squadra.nome;
+            var giocatori=json.squadra.giocatori;
+            console.log(giocatori)
+            giocatori.forEach(async giocatore => {
+                if(giocatore.posizione<1||giocatore.posizione>11)
+                  return;
+                var response=await fetch(`backEnd/giocatori.php?idGiocatore=${giocatore.idGiocatore}`, {
+                                    method: 'GET',
+                                    headers:{"Content-Type":"application/json"}
+                                });
+                var json=await response.json();
+                if(!json.stato)
+                    return;
+                var infoGiocatore=json.giocatori[0];
+                console.log(infoGiocatore)
+                document.getElementById(`pos-${giocatore.posizione}-nome`).innerHTML=infoGiocatore.Nome.substr(0,1)+". "+
+                                                                                    infoGiocatore.Cognome;
+                                                                                    
+                document.getElementById(`pos-${giocatore.posizione}-stat`).innerHTML=infoGiocatore.NomeSquadra.substr(0,3)+" | "+
+                                                                                    infoGiocatore.Valutazione +" CR";
+                document.getElementById(`pos-${giocatore.posizione}-btn`).innerHTML='-';
+                document.getElementById(`pos-${giocatore.posizione}-btn`).onclick=()=>vendi(giocatore.posizione);
+
+            });
+        })
+    })
+
+    function ripulisci(){
+      for(var i=1;i<=11;i++)
+      {
+        posizione=i;
+        document.getElementById(`pos-${posizione}-stat`).innerHTML="";
+        document.getElementById(`pos-${posizione}-nome`).innerHTML="";
+        document.getElementById(`pos-${posizione}-btn`).innerHTML="+";
+        document.getElementById(`pos-${posizione}-btn`).onclick=()=>compra(posizione);
+      }
+    }
+    function compra(posizione){
+        window.location.href="compraGiocatore.html?posizione="+posizione;
+    }
+    async function vendi(posizione){
+      const dati={'apiKey': apiKey,'posizione': posizione}
+      var response=await fetch('backEnd/vendi.php', {
+                        method: 'PUT',
+                        headers:{"Content-Type":"application/json"},
+                        body: JSON.stringify(dati)
+                    });
+      var json=await response.json();
+      if(!json.stato)
+      {
+          alert("errore nella vendita!");
+          return;
+      }
+      document.getElementById(`pos-${posizione}-stat`).innerHTML="";
+      document.getElementById(`pos-${posizione}-nome`).innerHTML="";
+      document.getElementById(`pos-${posizione}-btn`).innerHTML="+";
+      document.getElementById(`pos-${posizione}-btn`).onclick=()=>compra(posizione);
+    }
+  </script>
+</body>
+</html>

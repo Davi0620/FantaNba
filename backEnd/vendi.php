@@ -7,9 +7,10 @@
     {
         $giocatori=[];
         $apiKey =$parametri["apiKey"];
-        $idGiocatore=$parametri["idGiocatore"];
-
-        $conn->query("DELETE FROM squadrautente WHERE idGiocatore=$idGiocatore and idUtente=(select id from utente where apiKey='$apiKey')");
+        $posizione=$parametri["posizione"];
+        $result=$conn->query("SELECT idGiocatore FROM squadrautente WHERE posizione=$posizione and idUtente=(select id from utente where apiKey='$apiKey')");
+        $idGiocatore=$result->fetch_assoc()["idGiocatore"];
+        $conn->query("DELETE FROM squadrautente WHERE posizione=$posizione and idUtente=(select id from utente where apiKey='$apiKey')");
         if($conn->affected_rows>0)
             if($conn->query("UPDATE utente SET crediti = crediti+(SELECT Valutazione from giocatore WHERE id=$idGiocatore) WHERE apiKey = '$apiKey'"))
                 echo json_encode(["stato"=>true,"messaggio"=>"squadra creata"]);

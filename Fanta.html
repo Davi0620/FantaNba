@@ -25,7 +25,7 @@
 
   // Funzione per caricare i giocatori dal server
   function caricaGiocatori() {
-    fetch('getGiocatori.php')
+    fetch('backEnd/getGiocatori.php')
       .then(response => response.json())
       .then(giocatori => {
         const container = document.getElementById('giocatori-container');

@@ -125,7 +125,7 @@
   </div>
 
   <script>
-    var nextPage="proveGrafica.html"
+    var nextPage="index.html"
     var apiKey=sessionStorage.getItem("apikey");
     if(!apiKey)
       window.location.href="login.html";
@@ -135,7 +135,7 @@
         const dati={'apiKey': apiKey,
                 'logo': document.getElementById("logo").value,
                 'nome': document.getElementById("nome").value}
-      return fetch('squadra.php', {
+      return fetch('backEnd/squadra.php', {
           method: 'POST',
           headers:{"Content-Type":"application/json"},
           body: JSON.stringify(dati)

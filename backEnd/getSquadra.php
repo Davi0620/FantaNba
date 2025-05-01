@@ -7,7 +7,7 @@
         $apiKey=$_GET["apikey"];
         $giocatori=[];
         $result = $conn->query(
-                        "SELECT idGiocatore, prezzo, data 
+                        "SELECT idGiocatore, prezzo, data, posizione
                                 FROM `squadrautente` 
                                 WHERE idUtente=(SELECT id from utente WHERE apiKey='$apiKey')");
         if($result->num_rows==0)

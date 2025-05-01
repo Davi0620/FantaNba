@@ -10,7 +10,7 @@
 
         function testCompra() {
             const dati={'apiKey': "809720-0bf3f4-516349-fc0074-b5e278",'idGiocatore': 1}
-            return fetch('compra.php', {
+            return fetch('backEnd/compra.php', {
                 method: 'PUT',
                 headers:{"Content-Type":"application/json"},
                 body: JSON.stringify(dati)
@@ -19,7 +19,7 @@
         
         function testVendi() {
             const dati={'apiKey': "809720-0bf3f4-516349-fc0074-b5e278",'idGiocatore': 1}
-            return fetch('vendi.php', {
+            return fetch('backEnd/vendi.php', {
                 method: 'PUT',
                 headers:{"Content-Type":"application/json"},
                 body: JSON.stringify(dati)
@@ -30,7 +30,7 @@
             const dati={'apiKey': "809720-0bf3f4-516349-fc0074-b5e278",
                         'logo': "test.jpg",
                         'nome': "test"}
-            return fetch('squadra.php', {
+            return fetch('backEnd/squadra.php', {
                 method: 'POST',
                 headers:{"Content-Type":"application/json"},
                 body: JSON.stringify(dati)
@@ -38,14 +38,14 @@
         }
         
         function testgiocatori() {
-            return fetch('giocatori.php', {
+            return fetch('backEnd/giocatori.php', {
                 method: 'GET',
                 headers:{"Content-Type":"application/json"}
             }).then(response => response.json())
         }
 
         function testgiocatori() {
-            return fetch(`getSquadra.php?apikey=${encodeURIComponent("809720-0bf3f4-516349-fc0074-b5e278")}`, {
+            return fetch(`backEnd/getSquadra.php?apikey=${encodeURIComponent("809720-0bf3f4-516349-fc0074-b5e278")}`, {
                 method: 'GET',
                 headers:{"Content-Type":"application/json"}
             }).then(response => response.json())
@@ -55,7 +55,7 @@
             const dati={'username': "pippoTest",
                         'password': "123",
                         'mail': "test@test.it"}
-            return fetch('registra.php', {
+            return fetch('backEnd/registra.php', {
                 method: 'POST',
                 headers:{"Content-Type":"application/json"},
                 body: JSON.stringify(dati)
@@ -63,7 +63,7 @@
         }
         
         function testLogin() {
-            return fetch(`login.php?username=pippoTest&password=123`, {
+            return fetch(`backEnd/login.php?username=pippoTest&password=123`, {
                 method: 'GET',
                 headers:{"Content-Type":"application/json"}
             }).then(response => response.json())
