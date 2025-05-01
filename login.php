@@ -11,7 +11,10 @@
                                 FROM utente 
                                 where username='$username' and password='$password'");
         if($result->num_rows==0)
-            echo json_encode(["stato"=>false,"messaggio"=>"non ci sono giocatori"]);
-        echo json_encode(["stato"=>true,"apiKey"=>$result->fetch_assoc()["apiKey"]]);
+        {
+            echo json_encode(["stato"=>false,"messaggio"=>"username o password errati"]);
+        }
+        else
+            echo json_encode(["stato"=>true,"apiKey"=>$result->fetch_assoc()["apiKey"]]);
     }
 ?>

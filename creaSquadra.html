@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login Dunkest</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #0D47A1, #1976D2);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+    .login-container {
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 20px;
+      padding: 30px;
+      width: 400px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+    .login-container h2 {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #FFEB3B;
+    }
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group label {
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    .form-group input {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background-color: #fff;
+      color: #333;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-bottom: 10px;
+    }
+    .form-group input:focus {
+      outline: none;
+      border: 2px solid #FFEB3B;
+    }
+    .login-btn, .register-btn {
+      background-color: #E53935;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 18px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      transition: all 0.3s;
+    }
+    .login-btn:hover, .register-btn:hover {
+      background-color: #FFEB3B;
+      color: #E53935;
+      transform: scale(1.05);
+    }
+    .login-btn:focus, .register-btn:focus {
+      outline: none;
+    }
+    .toggle-link {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .toggle-link a {
+      color: #FFEB3B;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .toggle-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Basket Style */
+    .basket-logo {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .basket-logo img {
+      width: 80px;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="login-container">
+
+    <!-- Form di Login -->
+    <div id="login-form">
+      <div class="form-group">
+        <label for="logo">logo</label>
+        <input type="text" id="logo" placeholder="Inserisci logo">
+      </div>
+      <div class="form-group">
+        <label for="nome">nome</label>
+        <input type="nome" id="nome" placeholder="Inserisci nome">
+      </div>
+      <button class="login-btn" onclick="creaSquadra()">crea squadra</button>
+    </div>
+
+
+    <!-- Logo NBA -->
+    <div class="basket-logo">
+      <img src="https://upload.wikimedia.org/wikipedia/en/0/03/NBA_logo.svg" alt="NBA Logo">
+    </div>
+  </div>
+
+  <script>
+    var nextPage="proveGrafica.html"
+    var apiKey=sessionStorage.getItem("apikey");
+    if(!apiKey)
+      window.location.href="login.html";
+
+    // Funzione per passare tra Login e Registrazione
+    function creaSquadra() {
+        const dati={'apiKey': apiKey,
+                'logo': document.getElementById("logo").value,
+                'nome': document.getElementById("nome").value}
+      return fetch('squadra.php', {
+          method: 'POST',
+          headers:{"Content-Type":"application/json"},
+          body: JSON.stringify(dati)
+      }).then(response => response.json())
+      .then(response => {
+        if(response.stato)
+        {
+            window.location.href=nextPage;
+        }
+        else{
+            alert("creazione andata male");
+        }
+      })
+      .catch(error => {
+        console.error('Errore caricando squadra:', error);
+        alert("creazione andata male");
+      });
+    }
+
+  </script>
+
+</body>
+</html>

@@ -9,10 +9,10 @@
         $result = $conn->query(
                         "SELECT idGiocatore, prezzo, data 
                                 FROM `squadrautente` 
-                                WHERE idUtente=(SELECT idUtente from utente WHERE apiKey='$apiKey')");
+                                WHERE idUtente=(SELECT id from utente WHERE apiKey='$apiKey')");
         if($result->num_rows==0)
         {
-            echo json_encode(["errore"=>"non ci sono giocatori"]);
+            echo json_encode(["stato"=>false,"messaggio"=>"non ci sono giocatori"]);
             die();
         }
         while($row=$result->fetch_assoc()){
@@ -24,6 +24,6 @@
         $row=$result->fetch_assoc();
         $nome=$row["nomeSquadra"];
         $logo=$row["logoSquadra"];
-        echo json_encode(["nome"=>$nome,"logo"=>$logo,"giocatori"=>$giocatori]);
+        echo json_encode(["stato"=>true,"squadra"=>["nome"=>$nome,"logo"=>$logo,"giocatori"=>$giocatori]]);
     }
 ?>

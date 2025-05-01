@@ -14,8 +14,21 @@
 </header>
 
 <div class="container">
-  
-  <div id="crediti" style="text-align: center; font-size: 1.8rem; margin-bottom: 30px;">
+  <div> 
+    <h2>info utente</h2>
+    <h3>username</h3>
+    <h3 id="username"></h3>
+    <h3>mail</h3>
+    <h3 id="mail"></h3>
+    <div id="crediti" style="text-align: center; font-size: 1.8rem; margin-bottom: 30px;">
+    </div>
+    <div id="squadra">
+      <h3>logoSquadra</h3>
+      <img id="logo"/>
+      <h3>nomeSquadra</h3>
+      <h3 id="nomeSquadra"></h3>
+      <a href="modificaSqudra.html">modificaSqudra</a>
+    </div>
     <!-- Qui mostreremo i crediti -->
   </div>
 
@@ -26,31 +39,47 @@
 </div>
 
 <script>
-  const apiKey = "809720-0bf3f4-516349-fc0074-b5e278"; // <-- Qui metti l'apiKey dell'utente
+  const apiKey = sessionStorage.getItem("apikey"); // <-- Qui metti l'apiKey dell'utente
 
-  function caricaCrediti() {
-    fetch('getCreditiUtente.php?apiKey=' + apiKey)
+  if(!apiKey)
+      window.location.href="login.html";
+
+  function caricaInfoUtente() {
+    fetch('utente.php?apikey=' +  encodeURIComponent(apiKey))
       .then(response => response.json())
       .then(data => {
         if (data.stato) {
-          document.getElementById('crediti').innerText = `💰 Crediti disponibili: ${data.crediti}`;
+          var utente=data["utente"];
+          document.getElementById('username').innerText = utente.username;
+          document.getElementById('mail').innerText = utente.email;
+          document.getElementById('crediti').innerText = `💰 Crediti disponibili: ${utente.crediti}`;
+          if(utente.logoSquadra)
+          {
+            document.getElementById('logo').src = utente.logoSquadra;
+            document.getElementById('nomeSquadra').innerText = utente.nomeSquadra;
+          }
+          else{
+            document.getElementById("squadra").hidden=true;
+          }
         } else {
-          document.getElementById('crediti').innerText = '❌ Errore caricando crediti.';
+          document.getElementById('crediti').innerText = '❌ Errore caricando info utente.';
         }
       })
       .catch(error => {
         console.error('Errore caricando crediti:', error);
-        document.getElementById('crediti').innerText = '❌ Errore caricando crediti.';
+        document.getElementById('crediti').innerText = '❌ Errore caricando info utente.';
       });
   }
 
   function caricaSquadra() {
-    fetch('getSquadraUtente.php?apiKey=' + apiKey)
+    fetch('getSquadra.php?apikey=' + encodeURIComponent(apiKey))
       .then(response => response.json())
-      .then(giocatori => {
+      .then(infoSquadra => {
         const container = document.getElementById('squadra-container');
         container.innerHTML = '';
-
+        if(!infoSquadra.stato)
+            return;
+        var giocatori=infoSquadra.squadra.giocatori;
         if (giocatori.length === 0) {
           container.innerHTML = '<p style=\"text-align:center; font-size:1.5rem;\">Non hai ancora acquistato giocatori! 🏀</p>';
           return;
@@ -72,10 +101,12 @@
         document.getElementById('squadra-container').innerText = '❌ Errore caricando squadra.';
       });
   }
-
   // Caricamento iniziale
-  caricaCrediti();
-  caricaSquadra();
+  document.addEventListener("DOMContentLoaded",()=>{
+    caricaInfoUtente();
+    caricaSquadra();
+  });
+  
 </script>
 
 </body>

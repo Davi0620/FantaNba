@@ -131,14 +131,15 @@
   <h1>FantaNba</h1>
   <div class="login-info">
     <script>
-      var isLoggedIn = false; // cambia a true per simulare utente loggato
+      var apikey = sessionStorage.getItem("apikey"); // cambia a true per simulare utente loggato
       var userProfileImage = "https://via.placeholder.com/45";
 
-      if (isLoggedIn) {
-        document.write('<img src="' + userProfileImage + '" alt="User Image">');
+      if (apikey) {
+        document.write('<a href="ProfiloUtente.html">AreaPersonale</a>');
       } else {
-        document.write('<a href="#">LOGIN</a>');
+        document.write('<a href="login.html">LOGIN</a>');
       }
+
     </script>
   </div>
 </div>
@@ -173,17 +174,17 @@
 
   <!-- Funzionalità -->
   <div class="features">
-    <div class="feature-card" onclick="location.href='#'">
-      <h3>Crea Squadra</h3>
+    <div class="feature-card" onclick="location.href='creaSquadra.html'">
+      <h3>Crea o modifica Squadra</h3>
       <p>Costruisci il tuo dream team NBA!</p>
     </div>
-    <div class="feature-card" onclick="location.href='#'">
+    <div class="feature-card" onclick="location.href='visualizzaGiocatori.html'">
       <h3>Visualizza Giocatori</h3>
       <p>Scopri i migliori talenti disponibili.</p>
     </div>
     <div class="feature-card" onclick="location.href='#'">
-      <h3>Statistiche LIVE</h3>
-      <p>Aggiornamenti in tempo reale sui tuoi campioni!</p>
+      <h3>modifica squadra</h3>
+      <p>compra o vendi i tuoi giocatori!</p>
     </div>
     <div class="feature-card" onclick="location.href='#'">
       <h3>Leghe Private</h3>
