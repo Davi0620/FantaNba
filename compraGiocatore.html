@@ -154,7 +154,7 @@
             body: JSON.stringify(dati)
         }).then(response => response.json()).then(json=>{
             if(!json.stato)
-                alert("riprova");
+                alert(json.messaggio);
             else
                 window.location.href="modificaSqudra.html";
         });

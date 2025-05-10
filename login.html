@@ -173,10 +173,12 @@
             method: 'GET',
             headers:{"Content-Type":"application/json"}
         }).then(response => response.json()) .then((json) => {
-            console.log(json["apiKey"]);
+            console.log(json);
             if(json["stato"])
             {
-              sessionStorage.setItem("apikey",json["apiKey"]);
+
+              sessionStorage.setItem("apikey",json.accesso["apiKey"]);
+              sessionStorage.setItem("gestore",json.accesso["gestore"])
               window.location.href=nextPage;
             }
         }).catch(error => error);

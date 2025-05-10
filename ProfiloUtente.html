@@ -29,12 +29,10 @@
       <h3 id="nomeSquadra"></h3>
       <a href="modificaSqudra.html">modificaSqudra</a>
     </div>
+    <a href="logout.html"><h1>logout</h1></a>
     <!-- Qui mostreremo i crediti -->
   </div>
 
-  <div id="squadra-container">
-    <!-- Qui si caricheranno i giocatori della squadra -->
-  </div>
 
 </div>
 
@@ -71,36 +69,6 @@
       });
   }
 
-  function caricaSquadra() {
-    fetch('backEnd/getSquadra.php?apikey=' + encodeURIComponent(apiKey))
-      .then(response => response.json())
-      .then(infoSquadra => {
-        const container = document.getElementById('squadra-container');
-        container.innerHTML = '';
-        if(!infoSquadra.stato)
-            return;
-        var giocatori=infoSquadra.squadra.giocatori;
-        if (giocatori.length === 0) {
-          container.innerHTML = '<p style=\"text-align:center; font-size:1.5rem;\">Non hai ancora acquistato giocatori! 🏀</p>';
-          return;
-        }
-
-        giocatori.forEach(giocatore => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = `
-            <h2>${giocatore.nome}</h2>
-            <p>Ruolo: ${giocatore.ruolo}</p>
-            <p>Valutazione: ${giocatore.valutazione}</p>
-          `;
-          container.appendChild(card);
-        });
-      })
-      .catch(error => {
-        console.error('Errore caricando squadra:', error);
-        document.getElementById('squadra-container').innerText = '❌ Errore caricando squadra.';
-      });
-  }
   // Caricamento iniziale
   document.addEventListener("DOMContentLoaded",()=>{
     caricaInfoUtente();

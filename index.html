@@ -150,25 +150,28 @@
   <!-- Risultati -->
   <div class="results">
     <h2>Ultime Partite</h2>
-    <div class="result-item">
-      <span>Heat</span>
-      <span class="score">102 - 98</span>
-      <span>Celtics</span>
-    </div>
-    <div class="result-item">
-      <span>Lakers</span>
-      <span class="score">110 - 107</span>
-      <span>Warriors</span>
-    </div>
-    <div class="result-item">
-      <span>Bucks</span>
-      <span class="score">99 - 105</span>
-      <span>Sixers</span>
-    </div>
-    <div class="result-item">
-      <span>Knicks</span>
-      <span class="score">115 - 120</span>
-      <span>Nets</span>
+    <div id="simula"></div>
+    <div id="risultati">
+      <div class="result-item">
+        <span>Heat</span>
+        <span class="score">102 - 98</span>
+        <span>Celtics</span>
+      </div>
+      <div class="result-item">
+        <span>Lakers</span>
+        <span class="score">110 - 107</span>
+        <span>Warriors</span>
+      </div>
+      <div class="result-item">
+        <span>Bucks</span>
+        <span class="score">99 - 105</span>
+        <span>Sixers</span>
+      </div>
+      <div class="result-item">
+        <span>Knicks</span>
+        <span class="score">115 - 120</span>
+        <span>Nets</span>
+      </div>
     </div>
   </div>
 
@@ -196,8 +199,58 @@
 
 <!-- Logo NBA -->
 <div class="nba-logo">
-    <img src="https://upload.wikimedia.org/wikipedia/en/0/03/NBA_logo.svg" alt="NBA Logo">
+    <img src="./immagini/nba.png" alt="NBA Logo">
   </div>
   
+
+  <script>
+    document.addEventListener("DOMContentLoaded",()=>{
+      visualizzaRisultati();
+      gestioneAdmin();
+    });
+    function gestioneAdmin(){
+      if(sessionStorage.getItem("gestore")!=1)
+        return
+
+
+
+      document.getElementById("simula").innerHTML=`<button onCLick='aggiorna()'>prossima partita</button>`;
+    }
+    function aggiorna(){
+        const dati={'apiKey': sessionStorage.getItem("apikey")}
+        fetch('backEnd/aggiorna.php', {
+            method: 'PUT',
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify(dati)
+        }).then(response => response.json()).then(json=>{
+          if(json.stato)
+            location.reload(true);
+          else
+            alert(json.messaggio);
+        })
+    }
+
+    async function visualizzaRisultati(){
+        var s="";
+        var risposta=await fetch('backEnd/partite.php',{
+            method: 'GET',
+            headers:{"Content-Type":"application/json"}
+        })
+        risposta=await risposta.json();
+        if(risposta.stato)
+        {
+          var partite=risposta.partite;
+          partite.forEach(partita => {
+            s+=`<div class="result-item">
+            <span>${partita.nomeCasa}</span>
+            <span class="score">${partita.puntiCasa==null?"?":partita.puntiCasa} - ${partita.puntiOspite==null?"?":partita.puntiOspite}</span>
+            <span>${partita.nomeOspite}</span>
+          </div>`
+            
+          });
+          document.getElementById("risultati").innerHTML=s;
+        }
+    }
+  </script>
 </body>
 </html>

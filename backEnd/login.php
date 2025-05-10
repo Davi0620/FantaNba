@@ -7,7 +7,7 @@
         $username=$_GET["username"];
         $password=md5($_GET["password"]);
         $result = $conn->query(
-                        "SELECT apiKey 
+                        "SELECT apiKey, gestore
                                 FROM utente 
                                 where username='$username' and password='$password'");
         if($result->num_rows==0)
@@ -15,6 +15,6 @@
             echo json_encode(["stato"=>false,"messaggio"=>"username o password errati"]);
         }
         else
-            echo json_encode(["stato"=>true,"apiKey"=>$result->fetch_assoc()["apiKey"]]);
+            echo json_encode(["stato"=>true,"accesso"=>$result->fetch_assoc()]);
     }
 ?>

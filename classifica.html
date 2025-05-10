@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classifica Utenti NBA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #0c0c0c;
+      font-family: 'Anton', sans-serif;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #f44336;
+      font-size: 3rem;
+      margin-bottom: 40px;
+    }
+
+    .leaderboard {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .user-card {
+      background: linear-gradient(to right, #1e88e5, #c62828);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .user-card:hover {
+      transform: scale(1.03);
+    }
+
+    .user-card:nth-child(1) {
+      background: linear-gradient(to right, gold, orange);
+      color: #000;
+      font-size: 1.3rem;
+    }
+
+    .username {
+      font-size: 1.5rem;
+    }
+
+    .score {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏀 Classifica Utenti</h1>
+  <div class="leaderboard" id="leaderboard">
+    <div class="user-card">
+      <div class="username">🔥 LebronFan23</div>
+      <div class="score">2500 pts</div>
+    </div>
+    <div class="user-card">
+      <div class="username">KobeForever</div>
+      <div class="score">2240 pts</div>
+    </div>
+    <div class="user-card">
+      <div class="username">CurrySplash</div>
+      <div class="score">2180 pts</div>
+    </div>
+    <div class="user-card">
+      <div class="username">GiannisUnstoppable</div>
+      <div class="score">2100 pts</div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded",()=>{
+        fetch("backend/classifica.php",{
+                method: 'GET',
+                headers:{"Content-Type":"application/json"}
+            }).then(response => response.json()).then(json=>{
+                    console.log(json)
+                if(json.stato)
+                {
+                    var c="";
+                    json.utenti.forEach(utente => {
+                        c+=`<div class="user-card">
+                                <div class="username">${utente.username}</div>
+                                <div class="score">${utente.crediti} pts</div>
+                            </div>`
+                    });
+                    document.getElementById("leaderboard").innerHTML=c;
+                }
+            })
+    })
+  </script>
+</body>
+</html>

@@ -38,11 +38,11 @@
         }
         
         function testgiocatori() {
-            return fetch('backEnd/giocatori.php', {
-                method: 'GET',
-                headers:{"Content-Type":"application/json"}
-            }).then(response => response.json())
         }
+        return fetch('backEnd/giocatori.php', {
+            method: 'GET',
+            headers:{"Content-Type":"application/json"}
+        }).then(response => response.json())
 
         function testgiocatori() {
             return fetch(`backEnd/getSquadra.php?apikey=${encodeURIComponent("809720-0bf3f4-516349-fc0074-b5e278")}`, {

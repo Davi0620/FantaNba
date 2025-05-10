@@ -10,6 +10,13 @@
         $idGiocatore=$parametri["idGiocatore"];
         $posizione=$parametri["posizione"];
         try{
+            $result= $conn->query("select crediti,(SELECT Valutazione from giocatore WHERE id=$idGiocatore) as prezzoGiocatore from utente WHERE apiKey = '$apiKey'");
+            $row=$result->fetch_assoc();
+            if($row["crediti"]<$row["prezzoGiocatore"])
+            {
+                echo json_encode(["stato"=>false,"messaggio"=>"non hai abbastanza crediti"]);
+                die();
+            }
             if($conn->query("INSERT INTO `squadrautente` (`idUtente`, `idGiocatore`,`posizione`, `prezzo`) VALUES 
                             ((select id from utente WHERE apiKey='$apiKey'), $idGiocatore, $posizione, (SELECT Valutazione from giocatore WHERE id=$idGiocatore));"))
                 if($conn->query("UPDATE utente SET crediti = crediti-(SELECT Valutazione from giocatore WHERE id=$idGiocatore) WHERE apiKey = '$apiKey'"))

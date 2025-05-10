@@ -26,7 +26,10 @@
         $sql=$sql." order by Valutazione desc";
         $result = $conn->query($sql);
         if($result->num_rows==0)
-            echo json_encode(["stato"=>false,"messaggio"=>"non ci sono giocatori"]);
+            {
+                echo json_encode(["stato"=>false,"messaggio"=>"non ci sono giocatori"]);
+                die();
+            }
         while($row=$result->fetch_assoc()){
             $giocatori[]=$row;
         }

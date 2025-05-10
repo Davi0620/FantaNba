@@ -23,7 +23,8 @@
       background: rgba(0, 0, 0, 0.7);
       border-radius: 20px;
       padding: 30px;
-      width: 400px;
+      max-width: 800px; /* o più se vuoi, ad esempio 1000px */
+      width: 90%;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
     .login-container h2 {
@@ -96,6 +97,28 @@
     .basket-logo img {
       width: 80px;
     }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      justify-items: center;
+    }
+
+    .gallery img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: border 0.3s ease;
+      border-radius: 10px;
+    }
+
+
+    .gallery img.selected {
+      border-color: #007bff;
+      box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+    }
   </style>
 </head>
 
@@ -107,8 +130,8 @@
     <!-- Form di Login -->
     <div id="login-form">
       <div class="form-group">
-        <label for="logo">logo</label>
-        <input type="text" id="logo" placeholder="Inserisci logo">
+        <h2>Seleziona una delle 20 immagini</h2>
+        <div class="gallery" id="gallery"></div>
       </div>
       <div class="form-group">
         <label for="nome">nome</label>
@@ -120,7 +143,7 @@
 
     <!-- Logo NBA -->
     <div class="basket-logo">
-      <img src="https://upload.wikimedia.org/wikipedia/en/0/03/NBA_logo.svg" alt="NBA Logo">
+      <img src="./immagini/nba.png" alt="NBA Logo">
     </div>
   </div>
 
@@ -130,10 +153,34 @@
     if(!apiKey)
       window.location.href="login.html";
 
+
+    const gallery = document.getElementById('gallery');
+
+    for (let i = 1; i <= 12; i++) {
+        const img = document.createElement('img');
+        img.src = `./immagini/${i}.jpg`;
+        img.dataset.id = i;
+        img.alt = `Immagine ${i}`;
+
+        img.addEventListener('click', () => {
+          // Rimuove la selezione da tutte
+          document.querySelectorAll('.gallery img').forEach(img => img.classList.remove('selected'));
+
+          // Aggiunge selezione
+          img.classList.add('selected');
+
+          // Ottieni l'id selezionato
+          const selectedId = img.dataset.id;
+          console.log(`Hai selezionato l'immagine con ID: ${selectedId}`);
+        });
+
+        gallery.appendChild(img);
+     }
+
     // Funzione per passare tra Login e Registrazione
     function creaSquadra() {
         const dati={'apiKey': apiKey,
-                'logo': document.getElementById("logo").value,
+                'logo': getSelectedImageId(),
                 'nome': document.getElementById("nome").value}
       return fetch('backEnd/squadra.php', {
           method: 'POST',
@@ -155,6 +202,14 @@
       });
     }
 
+
+     
+
+     function getSelectedImageId() {
+        const selected = document.querySelector('.gallery img.selected');
+        console.log(selected.src)
+        return selected ? selected.src : null;
+      }
   </script>
 
 </body>
