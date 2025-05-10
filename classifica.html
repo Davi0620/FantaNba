@@ -21,6 +21,63 @@
       margin-bottom: 40px;
     }
 
+    .podium {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* fondamentale per allineare le basi */
+      gap: 20px;
+      margin-bottom: 50px;
+      height: 220px; /* altezza fissa per contenitore */
+    }
+
+    .podium-place {
+      border-radius: 16px;
+      text-align: center;
+      flex: 1;
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+      transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 20px;
+      position: relative;
+    }
+    
+    .podium-place:hover {
+      transform: scale(1.05);
+    }
+    
+    .first {
+      background: linear-gradient(to bottom, gold, orange);
+      color: black;
+      height: 100%;
+    }
+    
+    .second {
+      background: linear-gradient(to bottom, silver, #aaa);
+      color: black;
+      height: 70%;
+    }
+    
+    .third {
+      background: linear-gradient(to bottom, #cd7f32, #8b5e3c);
+      color: black;
+      height: 60%;
+    }
+
+    .place-label {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .username {
+      font-size: 1.5rem;
+    }
+
+    .score {
+      font-size: 1.2rem;
+    }
+
     .leaderboard {
       max-width: 600px;
       margin: 0 auto;
@@ -29,74 +86,61 @@
     .user-card {
       background: linear-gradient(to right, #1e88e5, #c62828);
       border-radius: 16px;
-      padding: 20px;
+      padding: 15px 20px;
       margin-bottom: 15px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-      transition: transform 0.2s ease;
-    }
-
-    .user-card:hover {
-      transform: scale(1.03);
-    }
-
-    .user-card:nth-child(1) {
-      background: linear-gradient(to right, gold, orange);
-      color: #000;
-      font-size: 1.3rem;
-    }
-
-    .username {
-      font-size: 1.5rem;
-    }
-
-    .score {
-      font-size: 1.5rem;
     }
   </style>
 </head>
 <body>
   <h1>🏀 Classifica Utenti</h1>
-  <div class="leaderboard" id="leaderboard">
-    <div class="user-card">
-      <div class="username">🔥 LebronFan23</div>
-      <div class="score">2500 pts</div>
-    </div>
-    <div class="user-card">
-      <div class="username">KobeForever</div>
-      <div class="score">2240 pts</div>
-    </div>
-    <div class="user-card">
-      <div class="username">CurrySplash</div>
-      <div class="score">2180 pts</div>
-    </div>
-    <div class="user-card">
-      <div class="username">GiannisUnstoppable</div>
-      <div class="score">2100 pts</div>
-    </div>
-  </div>
+
+  <div class="podium" id="podium"></div>
+
+  <div class="leaderboard" id="leaderboard"></div>
+
   <script>
-    document.addEventListener("DOMContentLoaded",()=>{
-        fetch("backend/classifica.php",{
-                method: 'GET',
-                headers:{"Content-Type":"application/json"}
-            }).then(response => response.json()).then(json=>{
-                    console.log(json)
-                if(json.stato)
-                {
-                    var c="";
-                    json.utenti.forEach(utente => {
-                        c+=`<div class="user-card">
-                                <div class="username">${utente.username}</div>
-                                <div class="score">${utente.crediti} pts</div>
-                            </div>`
-                    });
-                    document.getElementById("leaderboard").innerHTML=c;
-                }
-            })
-    })
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("backEnd/classifica.php", {
+        method: 'GET',
+        headers: { "Content-Type": "application/json" }
+      }).then(response => response.json()).then(json => {
+        if (json.stato) {
+          const podiumEl = document.getElementById("podium");
+          const leaderboardEl = document.getElementById("leaderboard");
+
+          // Costruzione del podio
+          const podiumClasses = ["second", "first", "third"];
+          const podiumOrder = [1, 0, 2]; // Ordine visivo: 2°, 1°, 3°
+          const top3 = json.utenti.slice(0, 3);
+          const rest = json.utenti.slice(3);
+
+          podiumOrder.forEach((value,index) => {
+            const user = top3[value];
+            if (user) {
+              podiumEl.innerHTML += `
+                <div class="podium-place ${podiumClasses[index]}">
+                  <div class="place-label">${value + 1}°</div>
+                  <div class="username">${user.username}</div>
+                  <div class="score">${user.crediti} pts</div>
+                </div>`;
+            }
+          });
+
+          // Lista degli altri utenti
+          rest.forEach(user => {
+            leaderboardEl.innerHTML += `
+              <div class="user-card">
+                <div class="username">${user.username}</div>
+                <div class="score">${user.crediti} pts</div>
+              </div>`;
+          });
+        }
+      });
+    });
   </script>
 </body>
 </html>
