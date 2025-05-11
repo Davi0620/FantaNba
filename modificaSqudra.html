@@ -141,7 +141,7 @@
                                                                                     infoGiocatore.Cognome;
                                                                                     
                 document.getElementById(`pos-${giocatore.posizione}-stat`).innerHTML=infoGiocatore.NomeSquadra.substr(0,3)+" | "+
-                                                                                    giocatore.prezzo+" "+(giocatore.prezzo-infoGiocatore.Valutazione)  +" CR";
+                                                                                    giocatore.prezzo+" "+(infoGiocatore.Valutazione-giocatore.prezzo)  +" CR";
                 document.getElementById(`pos-${giocatore.posizione}-btn`).innerHTML='-';
                 document.getElementById(`pos-${giocatore.posizione}-btn`).onclick=()=>vendi(giocatore.posizione);
 
